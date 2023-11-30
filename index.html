@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models">
+  <meta name="keywords" content="Vision Transformer, Text Supervision">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/3.20.0/gradio.js" ></script>
+  <style>
+
+.src-image{
+  margin-bottom: -4%;
+}
+.dst-image {
+  margin-top:-95%;
+  opacity: 0;
+  transition: 1s ease;
+}
+
+.overlay-image:hover .dst-image {
+  opacity: 1;
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://jerryxu.net">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://jerryxu.net/IMProv">
+            IMProv
+          </a>
+          <a class="navbar-item" href="https://jerryxu.net/ODISE">
+            ODISE
+          </a>
+          <a class="navbar-item" href="https://jerryxu.net/GroupViT">
+            GroupViT
+          </a>
+          <a class="navbar-item" href="https://jerryxu.net/VFS">
+            VFS
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-spaced is-1 publication-title">IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://jerryxu.net">Jiarui Xu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://yossigandelsman.github.io/">Yossi Gandelsman</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.amirbar.net/">Amir Bar</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://jwyang.github.io/">Jianwei Yang</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.microsoft.com/en-us/research/people/jfgao/">Jianfeng Gao</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://people.eecs.berkeley.edu/~trevor/">Trevor Darrell</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://xiaolonw.github.io/">Xiaolong Wang</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <!-- <span class="author-block"><sup>1</sup>University of California San Diego,</span>
+            <span class="author-block"><sup>2</sup>University of California Berkeley,</span> -->
+            <span class="author-block"><sup>1</sup>UCSD,</span>
+            <span class="author-block"><sup>2</sup>UCB,</span>
+            <span class="author-block"><sup>3</sup>Microsoft</span>
+          </div>
+          <!-- <div class="is-size-6 publication-authors">
+            <span class="author-block">(† equal contribution)</span>
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(coming soon)</span>
+                  </a>
+              </span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <!-- <div class="container is-max-desktop"> -->
+    <div class="hero-body">
+      <div class="container">
+        <!-- <img src="figs/teaser.pdf" alt=""> -->
+        <video autoplay muted loop playsinline height="100%">
+            <source src="figs/teaser.mp4" type="video/mp4">
+        </video>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        Our model in-context learns to solve computer vision tasks by inpainting the masked area with the task solution using multimodal prompt.
+      </h2>
+    </div>
+  <!-- </div> -->
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+          <p>
+            In-context learning allows adapting a model to new tasks given a task description at test time. In this paper, we
+            present IMProv- a generative model that is able to in-context learn visual tasks from multimodal prompts. Given a
+            textual description of a visual task (e.g. “Left: input image, Right: foreground segmentation”), a few input-output
+            visual examples, or both, the model in-context learns to solve it for a new test input. We train a masked generative
+            transformer on a new dataset of figures from computer vision papers and their associated captions, together with a
+            captioned large-scale image-text dataset. During inference time, we prompt the model with text and/or image task
+            example(s) and have the model inpaint the corresponding output. We show that training our model with text conditioning
+            and scaling the dataset size improves in-context learning for computer vision tasks by over +10% AP for Foreground
+            Segmentation, over +5% gains in AP for Single Object Detection, and almost 20% lower LPIPS in Colorization. Our
+            empirical results suggest that vision and language prompts are complementary and it is advantageous to use both to
+            achieve better in-context learning performance.
+          </p>
+          </div>
+        </div>
+    </div>
+      <div class="container">
+        <video autoplay muted loop playsinline height="100%">
+            <source src="figs/teaser_results.mp4" type="video/mp4">
+        </video>
+      </div>
+    <!--/ Abstract. -->
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    
+    <h2 class="title is-3">IMProv Architecture</h3>
+    <p> During training, the input image is patchified, masked, and fed to the model together with the associated caption
+    CLIP embeddings. For each masked token, the decoder outputs a distribution over a frozen pretrained
+    VQGAN codebook. The model is trained with cross-entropy loss. </p>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-fullwidth mt-6 mr-6 ml-6">
+        <img src="figs/arcitecture.png" alt="">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3">Qualitative Results</h2>
+    <div class="columns">
+      <div class="column">
+        <p>
+          For each vision task X, we evaluate our model on two tasks - X-to-images and images-to-X. 
+        </p>
+      </div>
+    </div>
+
+    <h3 class="title is-4">Image -> Segmentation</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/img2seg/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2seg/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2seg/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Image -> Edge</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/img2hed/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2hed/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2hed/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Image -> Depth</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/img2depth/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2depth/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2depth/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Image -> Normal</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/img2normal/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2normal/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/img2normal/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Segmentation -> image</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/seg2img/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/seg2img/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/seg2img/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Edge -> Image</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/hed2img/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/hed2img/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/hed2img/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Depth -> Image</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/depth2img/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/depth2img/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/depth2img/03.png">
+      </div>
+    </div>
+    <h3 class="title is-4">Normal -> Image</h3>
+    <div class="columns">
+      <div class="column">
+        <img src="figs/results/normal2img/01.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/normal2img/02.png">
+      </div>
+      <div class="column">
+        <img src="figs/results/normal2img/03.png">
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+@article{xu2022odise,
+  author    = {Xu, Jiarui and Gandelsman, Yossi and Bar, Amir and Yang, Jianwei and Gao, Jianfeng and Darrell, Trevor and Wang, Xiaolong},
+  title     = {{IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks}},
+  journal   = {arXiv preprint arXiv: },
+  year      = {2023},
+}
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/xvjiarui" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="content">
+        <p>
+          The template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
