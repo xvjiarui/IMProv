@@ -2,7 +2,7 @@
 
 This repository is the official implementation of IMProv introduced in the paper:
 
-[**IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks**](https://arxiv.org/abs/)
+[**IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks**](https://arxiv.org/abs/2312.01771)
 
 [*Jiarui Xu*](https://jerryxu.net),
 [*Yossi Gandelsman*](https://yossigandelsman.github.io/),
@@ -23,7 +23,8 @@ More in project page: [https://jerryxu.net/IMProv/](https://jerryxu.net/IMProv/)
 * [Jiarui Xu's Project Page](https://jerryxu.net/IMProv/) (with additional visual results)
 <!-- * [HuggingFace 🤗 Demo](https://huggingface.co/spaces/xvjiarui/IMProv) -->
 * [HuggingFace 🤗 Model](https://huggingface.co/xvjiarui/IMProv-v1-0)
-* [arXiv Page](https://arxiv.org/abs/)
+* Run the demo on Google Colab: [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1mJlZutYhVcwW9AMFcuEZ-d2SvuLnXLIh?usp=sharing)
+* [arXiv Page](https://arxiv.org/abs/2312.01771)
 
 ## Citation
 
@@ -33,7 +34,7 @@ If you find our work useful in your research, please cite:
 @article{xu2023improv,
   author    = {Xu, Jiarui and Gandelsman, Yossi and Bar, Amir and Yang, Jianwei and Gao, Jianfeng and Darrell, Trevor and Wang, Xiaolong},
   title     = {{IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks}},
-  journal   = {arXiv preprint arXiv: },
+  journal   = {arXiv preprint arXiv: 2312.01771},
   year      = {2023},
 }
 ```
