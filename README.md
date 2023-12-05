@@ -15,7 +15,7 @@ This repository is the official implementation of IMProv introduced in the paper
 ![teaser](figs/teaser_v3.gif)
 
 ## Visual Results
-![teaser](figs/teaser_results.gif) 
+![teaser](figs/teaser_results_v2.gif) 
 More in project page: [https://jerryxu.net/IMProv/](https://jerryxu.net/IMProv/)
 
 
