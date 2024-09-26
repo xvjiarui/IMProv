@@ -1,4 +1,4 @@
-# IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks
+# IMProv: Inpainting-based Multimodal Prompting for Computer Vision Tasks (Accepted to TMLR 2024)
 
 This repository is the official implementation of IMProv introduced in the paper:
 
